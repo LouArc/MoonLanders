@@ -4,26 +4,25 @@ import { ARButton } from "three/examples/jsm/webxr/ARButton";
 import planetController from "../controllers/planet.controller"; // Ensure this is imported
 import data from "../assets/planets.json"; // Ensure this is imported
 import { Planet } from "../models/planet.model";
-import sunTexture from "../assets/textures/sun.jpg"
-console.log(sunTexture)
+import sunTexture from "../assets/textures/sun.jpg";
+console.log(sunTexture);
 
 interface ARSceneInterface {
-  speed: number,
-  selectedScene: string
+  speed: number;
+  selectedScene: string;
 }
 
-const ARScene: React.FC<ARSceneInterface> = ({speed, selectedScene}) => {
+const ARScene: React.FC<ARSceneInterface> = ({ speed, selectedScene }) => {
   let camera: THREE.PerspectiveCamera;
   let scene: THREE.Scene;
   let renderer: THREE.WebGLRenderer;
   let sunRef: THREE.Mesh | null = null;
 
   const divRef = useRef<HTMLDivElement>(null); // Create a ref for the div container\
-  const [simulatorSpeed, setSimulatorSpeed] = useState<number>(1)
-  
+  const [simulatorSpeed, setSimulatorSpeed] = useState<number>(1);
 
   useEffect(() => {
-    setSimulatorSpeed(speed)
+    setSimulatorSpeed(speed);
     if (divRef.current) {
       init();
       animate();
@@ -63,12 +62,11 @@ const ARScene: React.FC<ARSceneInterface> = ({speed, selectedScene}) => {
     const planets = planetController.loadPlanetData(data);
 
     // Add the Solar System
-    if(selectedScene == "Sistema Solar"){
+    if (selectedScene == "Sistema Solar") {
       createSolarSystem();
-    }else{
-      displayOnlyPlanet(planets, selectedScene)
+    } else {
+      displayOnlyPlanet(planets, selectedScene);
     }
-    
 
     // Add the AR button to the body of the DOM
     document.body.appendChild(ARButton.createButton(renderer));
@@ -84,14 +82,13 @@ const ARScene: React.FC<ARSceneInterface> = ({speed, selectedScene}) => {
     if (selectedPlanet) {
       // Remove all other planets and add only the selected one
       planets.forEach((planet) => scene.remove(planet.mesh)); // Remove all
-     
-      selectedPlanet.mesh.position.x = 2
+
+      selectedPlanet.mesh.position.x = 2;
       scene.add(selectedPlanet.mesh); // Add only the selected one
     } else {
       console.error(`Planet ${planetName} not found!`);
     }
   };
-
 
   const createSolarSystem = () => {
     // Create the Sun
@@ -99,7 +96,7 @@ const ARScene: React.FC<ARSceneInterface> = ({speed, selectedScene}) => {
       "sun",
       1,
       0xffdd21,
-      new THREE.Vector3(0, 0, 0),
+      new THREE.Vector3(0, 0, -4),
       0,
       0,
       sunTexture,
@@ -110,7 +107,7 @@ const ARScene: React.FC<ARSceneInterface> = ({speed, selectedScene}) => {
     const textureLoader = new THREE.TextureLoader();
     let texture = textureLoader.load(sunTexture);
     const material = new THREE.MeshStandardMaterial({ map: texture });
-    sun.mesh.material = material
+    sun.mesh.material = material;
 
     scene.add(sun.mesh);
     sunRef = sun.mesh; // Store the Sun reference
@@ -118,14 +115,12 @@ const ARScene: React.FC<ARSceneInterface> = ({speed, selectedScene}) => {
     // Create planets with adjusted sizes and positions
     const planets = planetController.loadPlanetData(data);
     planets.forEach((planet) => {
-      scene.add(planet.mesh)
+      scene.add(planet.mesh);
       planet.orbitingObjects.forEach((orbitingObject) => {
-        scene.add(orbitingObject.mesh)
-      })
-      
+        scene.add(orbitingObject.mesh);
+      });
     });
   };
-
 
   const onWindowResize = () => {
     camera.aspect = window.innerWidth / window.innerHeight;
@@ -140,7 +135,7 @@ const ARScene: React.FC<ARSceneInterface> = ({speed, selectedScene}) => {
   const render = () => {
     // Update the orbits of the planets
     if (sunRef) {
-      console.log(simulatorSpeed)
+      console.log(simulatorSpeed);
       planetController.updateOrbit(sunRef.position, simulatorSpeed);
     }
     renderer.render(scene, camera);
@@ -148,7 +143,7 @@ const ARScene: React.FC<ARSceneInterface> = ({speed, selectedScene}) => {
 
   return (
     // Use a div that will contain the THREE.js renderer
-    <div ref={divRef} style={{ width: '100%', height: '100vh' }}></div>
+    <div ref={divRef} style={{ width: "100%", height: "100vh" }}></div>
   );
 };
 
