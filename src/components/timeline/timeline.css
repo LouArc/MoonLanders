@@ -1,0 +1,30 @@
+.timeline-container {
+    height: 300px;
+    width: 50px;
+    position: fixed;
+    display: relative;
+    top: 0;
+    margin: 50px;
+  }
+  
+  .timeline {
+    height: 100%;
+    width: 12px; /* Increased for better UI appearance */
+    background-color: lightgray;
+    border-radius: 6px;
+    position: relative;
+    margin-left: 50%;
+    transform: translateX(-50%);
+  }
+  
+  .draggable {
+    width: 20px;
+    height: 20px;
+    background-color: #4CAF50;
+    border-radius: 50%;
+    position: absolute;
+    top: 0;
+    left: -4px; /* Adjusted to center the circle */
+    cursor: pointer;
+  }
+  

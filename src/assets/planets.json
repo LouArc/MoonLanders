@@ -1,5 +1,15 @@
 [
     {
+      "id": 1,
+      "name": "Mercury",
+      "mass": 0.33,
+      "velocity": 47.87,
+      "distanceEarth": 57.9,
+      "nextClosesApproach": 0.4667,
+      "orbitPeriod": 88,
+      "discoveryDate": "Prehistoric",
+
+      
       "size": 0.3,
       "color": 16767488, 
       "position": { "x": 2.5, "y": 0, "z": 0 },
