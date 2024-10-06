@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import * as THREE from "three";
 import { ARButton } from "three/examples/jsm/webxr/ARButton";
 import planetController from "../controllers/planet.controller"; // Ensure this is imported
@@ -11,10 +11,14 @@ const ARScene: React.FC = () => {
   let mesh: THREE.Mesh;
   let sunRef: THREE.Mesh | null = null;
 
+  const divRef = useRef<HTMLDivElement>(null); // Create a ref for the div container
+
   useEffect(() => {
-    init();
-    animate();
-    window.addEventListener("resize", onWindowResize);
+    if (divRef.current) {
+      init();
+      animate();
+      window.addEventListener("resize", onWindowResize);
+    }
 
     return () => {
       window.removeEventListener("resize", onWindowResize);
@@ -23,9 +27,6 @@ const ARScene: React.FC = () => {
   }, []);
 
   const init = () => {
-    const container = document.createElement("div");
-    document.body.appendChild(container);
-
     scene = new THREE.Scene();
 
     camera = new THREE.PerspectiveCamera(
@@ -39,7 +40,11 @@ const ARScene: React.FC = () => {
     renderer.setPixelRatio(window.devicePixelRatio);
     renderer.setSize(window.innerWidth, window.innerHeight);
     renderer.xr.enabled = true;
-    container.appendChild(renderer.domElement);
+
+    // Append the renderer DOM element to the divRef
+    if (divRef.current) {
+      divRef.current.appendChild(renderer.domElement);
+    }
 
     const light = new THREE.HemisphereLight(0xffffff, 0xbbbbff, 1);
     light.position.set(0.5, 1, 0.25);
@@ -100,7 +105,10 @@ const ARScene: React.FC = () => {
     renderer.render(scene, camera);
   };
 
-  return null; // This component does not render anything directly
+  return (
+    // Use a div that will contain the THREE.js renderer
+    <div ref={divRef} style={{ width: '100%', height: '100vh' }}></div>
+  );
 };
 
 export default ARScene;

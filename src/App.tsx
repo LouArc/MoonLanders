@@ -1,17 +1,12 @@
 import PopUpInicio from "./components/popUpInicio/popupInico";
-import VerticalTimeline from "./components/timeline/timeline";
 import ArScene from "./screens/ArScene";
+import "./App.css"
 
 const App: React.FC = () => {
-  const handleTimeChange = (time: number) => {
-    console.log(`${time} years per second`);
-  };
-
   return (
-    <div className="App">
+    <div className="main">
       <ArScene />
       <PopUpInicio />
-      <VerticalTimeline maxTime={200} onTimeChange={handleTimeChange} />
     </div>
   );
 };
