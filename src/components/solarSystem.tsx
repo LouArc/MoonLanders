@@ -5,8 +5,6 @@ import data from "../assets/planets.json";
 
 interface SolarSystemProps {
   scene: THREE.Scene;
-  camera: THREE.PerspectiveCamera;
-  renderer: THREE.WebGLRenderer;
 }
 
 const SolarSystem: React.FC<SolarSystemProps> = ({ scene }) => {

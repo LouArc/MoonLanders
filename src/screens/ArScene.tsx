@@ -1,13 +1,15 @@
-import React, { useEffect } from "react"; 
+import React, { useEffect } from "react";
 import * as THREE from "three";
 import { ARButton } from "three/examples/jsm/webxr/ARButton";
-import SolarSystem from "../components/solarSystem";
+import planetController from "../controllers/planet.controller"; // Ensure this is imported
+import data from "../assets/planets.json"; // Ensure this is imported
 
 const ARScene: React.FC = () => {
   let camera: THREE.PerspectiveCamera;
   let scene: THREE.Scene;
   let renderer: THREE.WebGLRenderer;
   let mesh: THREE.Mesh;
+  let sunRef: THREE.Mesh | null = null;
 
   useEffect(() => {
     init();
@@ -57,10 +59,27 @@ const ARScene: React.FC = () => {
     scene.add(mesh);
 
     // Add the Solar System
-    <SolarSystem scene={scene} camera={camera} renderer={renderer} />;
+    createSolarSystem();
 
     // Add the AR button to the body of the DOM
     document.body.appendChild(ARButton.createButton(renderer));
+  };
+
+  const createSolarSystem = () => {
+    // Create the Sun
+    const sun = planetController.createPlanet(
+      1,
+      0xffdd21,
+      new THREE.Vector3(0, 0, 0),
+      0,
+      0
+    );
+    scene.add(sun.mesh);
+    sunRef = sun.mesh; // Store the Sun reference
+
+    // Create planets with adjusted sizes and positions
+    const planets = planetController.loadPlanetData(data);
+    planets.forEach((planet) => scene.add(planet.mesh));
   };
 
   const onWindowResize = () => {
@@ -74,6 +93,10 @@ const ARScene: React.FC = () => {
   };
 
   const render = () => {
+    // Update the orbits of the planets
+    if (sunRef) {
+      planetController.updateOrbit(sunRef.position, 1);
+    }
     renderer.render(scene, camera);
   };
 
