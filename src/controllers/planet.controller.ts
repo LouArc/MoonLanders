@@ -2,6 +2,7 @@ import * as THREE from "three";
 import { Planet } from "../models/planet.model";
 
 interface PlanetData {
+  name: string,
   size: number;
   color: number;
   position: { x: number; y: number; z: number };
@@ -14,6 +15,7 @@ class PlanetController {
   private time: number = 0; // Time variable for orbit calculations
 
   createPlanet(
+    name: string,
     size: number,
     color: number,
     position: THREE.Vector3,
@@ -29,6 +31,7 @@ class PlanetController {
     mesh.position.copy(position);
 
     const planet: Planet = {
+      name,
       size,
       color,
       position,
@@ -42,8 +45,9 @@ class PlanetController {
   loadPlanetData(json: PlanetData[]): Planet[] {
     try {
       this.planets = json.map(
-        ({ size, color, position, semiMajorAxis, eccentricity }) =>
+        ({ name, size, color, position, semiMajorAxis, eccentricity }) =>
           this.createPlanet(
+            name,
             size,
             color,
             new THREE.Vector3(position.x, position.y, position.z),
