@@ -92,23 +92,25 @@ const ARScene: React.FC<ARSceneInterface> = ({speed, selectedScene}) => {
 
 
   const createSolarSystem = () => {
-    // Create the Sun
-    const sun = planetController.createPlanet(
-      "sun",
-      1,
-      0xffdd21,
-      new THREE.Vector3(0, 0, 0),
-      0,
-      0
-    );
-    scene.add(sun.mesh);
-    sunRef = sun.mesh; // Store the Sun reference
-
-    // Create planets with adjusted sizes and positions
+    // Cargar la textura del Sol
+    const textureLoader = new THREE.TextureLoader();
+    const sunTexture = textureLoader.load("/assets/textures/sun.jpg");
+  
+    // Crear el Sol con la textura aplicada
+    const sunMaterial = new THREE.MeshBasicMaterial({ map: sunTexture });
+  
+    const sunGeometry = new THREE.SphereGeometry(1, 32, 32);
+    const sunMesh = new THREE.Mesh(sunGeometry, sunMaterial);
+    sunMesh.position.set(0, 0, 0); // Colocar el Sol en el centro
+  
+    scene.add(sunMesh); // Añadir el Sol a la escena
+    sunRef = sunMesh; // Guardar referencia al Sol
+  
+    // Crear los planetas con tamaños y posiciones ajustados
     const planets = planetController.loadPlanetData(data);
     planets.forEach((planet) => scene.add(planet.mesh));
   };
-
+  
 
   const onWindowResize = () => {
     camera.aspect = window.innerWidth / window.innerHeight;

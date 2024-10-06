@@ -4,7 +4,8 @@ import { Planet } from "../models/planet.model";
 interface PlanetData {
   name: string,
   size: number;
-  color: number;
+  color: number; // You may remove this if color is replaced by textures
+  texturePath: string; // Path to the texture file for the planet
   position: { x: number; y: number; z: number };
   semiMajorAxis: number;
   eccentricity: number;
@@ -14,17 +15,23 @@ class PlanetController {
   private planets: Planet[] = [];
   private time: number = 0; // Time variable for orbit calculations
 
+  // Modify createPlanet to take texturePath as a parameter
   createPlanet(
     name: string,
     size: number,
-    color: number,
+    texturePath: string, // Accept texture path
     position: THREE.Vector3,
     semiMajorAxis: number,
     eccentricity: number
   ): Planet {
     const geometry = new THREE.SphereGeometry(size, 32, 32);
+
+    // Load the texture
+    const textureLoader = new THREE.TextureLoader();
+    const texture = textureLoader.load(texturePath); // Load the texture from the given path
+
     const material = new THREE.MeshStandardMaterial({
-      color: new THREE.Color(color),
+      map: texture, // Use the texture instead of a color
     });
 
     const mesh = new THREE.Mesh(geometry, material);
@@ -33,7 +40,7 @@ class PlanetController {
     const planet: Planet = {
       name,
       size,
-      color,
+      color: 0, // Optional, not used if textures are applied
       position,
       mesh,
       semiMajorAxis,
@@ -45,11 +52,11 @@ class PlanetController {
   loadPlanetData(json: PlanetData[]): Planet[] {
     try {
       this.planets = json.map(
-        ({ name, size, color, position, semiMajorAxis, eccentricity }) =>
+        ({ name, size, texturePath, position, semiMajorAxis, eccentricity }) =>
           this.createPlanet(
             name,
             size,
-            color,
+            texturePath, // Use the texture path from the JSON
             new THREE.Vector3(position.x, position.y, position.z),
             semiMajorAxis,
             eccentricity
@@ -62,6 +69,7 @@ class PlanetController {
       return [];
     }
   }
+
 
   updateOrbit(sunPosition: THREE.Vector3, simulationSpeed: number) {
     const G = 6.6743e-11; // Gravitational constant
