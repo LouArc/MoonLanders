@@ -1,9 +1,11 @@
-import SolarSystem from "./components/solarSystem";
+// src/App.tsx
+import ArScene from "./screens/ArScene";
 
-const App = () => {
+const App: React.FC = () => {
   return (
-    <div>
-      <SolarSystem />
+    <div className="App">
+      {/* <ArScene /> */}
+      <ArScene />
     </div>
   );
 };
