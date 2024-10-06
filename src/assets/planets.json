@@ -5,7 +5,8 @@
       "color": 16767488, 
       "position": { "x": 2.5, "y": 0, "z": 0 },
       "semiMajorAxis": 5, 
-      "eccentricity": 0.1,
+      "eccentricity": 0.1, 
+      "texturePath": "../assets/textures/mercury.jpg",
       "rotationSpeed": 0.02,
       "orbitingObjects": []
     },
@@ -16,6 +17,7 @@
       "position": { "x": 10, "y": 0, "z": 0 },
       "semiMajorAxis": 10, 
       "eccentricity": 0.05,
+      "texturePath": "../assets/textures/venus.jpg",
       "rotationSpeed": 0.01,
       "orbitingObjects": []
     },
@@ -26,6 +28,7 @@
       "position": { "x": 15, "y": 0, "z": 0 },
       "semiMajorAxis": 15, 
       "eccentricity": 0.07,
+      "texturePath": "../assets/textures/earth.jpg",
       "rotationSpeed": 0.03,
       "orbitingObjects": [
         {
@@ -35,6 +38,7 @@
           "position": { "x": 2, "y": 0, "z": 0 },
           "semiMajorAxis": 1.0,
           "eccentricity": 0.0167,
+          "texturePath": "../assets/textures/jupiter.jpg",
           "rotationSpeed": 0.1,
           "orbitingObjects": []
         }
@@ -47,6 +51,7 @@
       "position": { "x": 25, "y": 0, "z": 0 },
       "semiMajorAxis": 25, 
       "eccentricity": 0.02 ,
+      "texturePath": "../assets/textures/mars.jpg",
       "rotationSpeed": 0.025,
       "orbitingObjects": []
     },
@@ -57,6 +62,7 @@
       "position": { "x": 35, "y": 0, "z": 0 },
       "semiMajorAxis": 35, 
       "eccentricity": 0.01 ,
+      "texturePath": "../assets/textures/jupiter.jpg",
       "rotationSpeed": 0.05,
       "orbitingObjects": []
     },
@@ -67,6 +73,7 @@
       "position": { "x": 45, "y": 0, "z": 0 },
       "semiMajorAxis": 45, 
       "eccentricity": 0.03 ,
+      "texturePath": "../assets/textures/saturn.jpg",
       "rotationSpeed": 0.04,
       "orbitingObjects": []
     },
@@ -77,6 +84,7 @@
       "position": { "x": 55, "y": 0, "z": 0 },
       "semiMajorAxis": 55, 
       "eccentricity": 0.04 ,
+      "texturePath": "../assets/textures/uranus.jpg",
       "rotationSpeed": 0.03,
       "orbitingObjects": []
     },
@@ -87,6 +95,7 @@
       "position": { "x": 65, "y": 0, "z": 0 },
       "semiMajorAxis": 65, 
       "eccentricity": 0.06 ,
+      "texturePath": "../assets/textures/neptune.jpg",
       "rotationSpeed": 0.02,
       "orbitingObjects": []
     }

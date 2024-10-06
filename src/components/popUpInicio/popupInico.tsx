@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import "./popupInicio.css";
 
-
 interface PopUpInicioInterface {
   setSpeed: React.Dispatch<React.SetStateAction<number>>;
   speed: number;
@@ -15,7 +14,7 @@ export const PopUpInicio: React.FC<PopUpInicioInterface> = ({
   setSpeed,
   selectedScene,
   setSelectedScene,
-  setIsInfoSelected
+  setIsInfoSelected,
 }) => {
   const nombresPlanetas = [
     "Sistema Solar",
@@ -65,7 +64,8 @@ export const PopUpInicio: React.FC<PopUpInicioInterface> = ({
             <input
               type="range"
               min="0" // Minimum value
-              max="5" // Maximum value
+              max="1" // Maximum value
+              step="0.1" // Step size (intervals of 0.1)
               value={speed} // Current value
               className="slider"
               id="myRange"
@@ -78,7 +78,14 @@ export const PopUpInicio: React.FC<PopUpInicioInterface> = ({
           </div>
         </form>
 
-        <button style={{width:200}} onClick={() => {setIsInfoSelected(true)}}>GET INFO!!</button>
+        <button
+          style={{ width: 200 }}
+          onClick={() => {
+            setIsInfoSelected(true);
+          }}
+        >
+          GET INFO!!
+        </button>
       </div>
     </div>
   );

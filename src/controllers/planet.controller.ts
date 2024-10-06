@@ -1,6 +1,33 @@
 import * as THREE from "three";
 import { Planet } from "../models/planet.model";
 
+interface TextureInterface{
+  name: string;
+  texture: string;
+}
+
+import mercuryTexture from "../assets/textures/mercury.jpg"
+import venusTexture from "../assets/textures/venus.jpg"
+import earthTexture from "../assets/textures/earth.jpg"
+import marsTexture from "../assets/textures/mars.jpg"
+import jupiterTexture from "../assets/textures/jupiter.jpg"
+import saturnTexture from "../assets/textures/saturn.jpg"
+import uranusTexture from "../assets/textures/uranus.jpg"
+import neptuneTexture from "../assets/textures/neptune.jpg"
+import lunaTexture from "../assets/textures/luna.jpeg"
+
+const textureArray: TextureInterface[] = [
+  { name: "Mercurio", texture: mercuryTexture },
+  { name: "Venus", texture: venusTexture },
+  { name: "Tierra", texture: earthTexture },
+  { name: "Marte", texture: marsTexture },
+  { name: "Jupiter", texture: jupiterTexture },
+  { name: "Saturno", texture: saturnTexture },
+  { name: "Urano", texture: uranusTexture },
+  { name: "Neptuno", texture: neptuneTexture },
+  {name: "Luna", texture: lunaTexture}
+];
+
 interface PlanetData {
   name: string;
   size: number;
@@ -8,6 +35,7 @@ interface PlanetData {
   position: { x: number; y: number; z: number };
   semiMajorAxis: number;
   eccentricity: number;
+  texturePath: string;
   rotationSpeed: number;
   orbitingObjects: PlanetData[];
 }
@@ -23,13 +51,26 @@ class PlanetController {
     position: THREE.Vector3,
     semiMajorAxis: number,
     eccentricity: number,
+    texturePath: string,
     rotationSpeed: number,
     orbitingObjects: Planet[]
   ): Planet {
     const geometry = new THREE.SphereGeometry(size, 32, 32);
-    const material = new THREE.MeshStandardMaterial({
-      color: new THREE.Color(color),
-    });
+    console.log(name)
+    console.log(textureArray)
+    const textureLoader = new THREE.TextureLoader();
+    const textureObject = textureArray.find((texture) => texture.name == name);
+    
+    let texture: THREE.Texture
+    if(textureObject != undefined){
+      
+      texture = textureLoader.load(textureObject.texture); // Replace with your texture path
+    }else{
+      
+      texture = textureLoader.load("");
+    }
+    
+    const material = new THREE.MeshStandardMaterial({ map: texture });
 
     const mesh = new THREE.Mesh(geometry, material);
     mesh.position.copy(position);
@@ -44,6 +85,7 @@ class PlanetController {
       mesh,
       semiMajorAxis,
       eccentricity,
+      texturePath,
       rotationSpeed,
       orbitingObjects,
     };
@@ -60,6 +102,7 @@ class PlanetController {
           position,
           semiMajorAxis,
           eccentricity,
+          texturePath,
           rotationSpeed,
           orbitingObjects
         }) =>
@@ -70,6 +113,7 @@ class PlanetController {
             new THREE.Vector3(position.x, position.y, position.z),
             semiMajorAxis,
             eccentricity,
+            texturePath,
             rotationSpeed,
             orbitingObjects.map(orbitingObject => 
               this.createPlanet(
@@ -79,6 +123,7 @@ class PlanetController {
                 new THREE.Vector3(orbitingObject.position.x, orbitingObject.position.y, orbitingObject.position.z),
                 orbitingObject.semiMajorAxis,
                 orbitingObject.eccentricity,
+                orbitingObject.texturePath,
                 orbitingObject.rotationSpeed,
                 [] // Assuming orbitingObjects of orbitingObject is empty at this level
               )

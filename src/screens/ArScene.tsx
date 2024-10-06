@@ -4,6 +4,8 @@ import { ARButton } from "three/examples/jsm/webxr/ARButton";
 import planetController from "../controllers/planet.controller"; // Ensure this is imported
 import data from "../assets/planets.json"; // Ensure this is imported
 import { Planet } from "../models/planet.model";
+import sunTexture from "../assets/textures/sun.jpg"
+console.log(sunTexture)
 
 interface ARSceneInterface {
   speed: number,
@@ -100,9 +102,16 @@ const ARScene: React.FC<ARSceneInterface> = ({speed, selectedScene}) => {
       new THREE.Vector3(0, 0, 0),
       0,
       0,
+      sunTexture,
       0.02,
       []
     );
+
+    const textureLoader = new THREE.TextureLoader();
+    let texture = textureLoader.load(sunTexture);
+    const material = new THREE.MeshStandardMaterial({ map: texture });
+    sun.mesh.material = material
+
     scene.add(sun.mesh);
     sunRef = sun.mesh; // Store the Sun reference
 
