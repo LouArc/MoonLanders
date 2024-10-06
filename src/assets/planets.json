@@ -1,0 +1,59 @@
+[
+    {
+      "size": 0.3,
+      "color": 16767488, 
+      "position": { "x": 2.5, "y": 0, "z": 0 },
+      "semiMajorAxis": 5, 
+      "eccentricity": 0.1 
+    },
+    {
+      "size": 0.5,
+      "color": 16744704,
+      "position": { "x": 10, "y": 0, "z": 0 },
+      "semiMajorAxis": 10, 
+      "eccentricity": 0.05 
+    },
+    {
+      "size": 0.7,
+      "color": 16711920,
+      "position": { "x": 15, "y": 0, "z": 0 },
+      "semiMajorAxis": 15, 
+      "eccentricity": 0.07 
+    },
+    {
+      "size": 0.9,
+      "color": 16711680,
+      "position": { "x": 25, "y": 0, "z": 0 },
+      "semiMajorAxis": 25, 
+      "eccentricity": 0.02 
+    },
+    {
+      "size": 1.0,
+      "color": 16744448,
+      "position": { "x": 35, "y": 0, "z": 0 },
+      "semiMajorAxis": 35, 
+      "eccentricity": 0.01 
+    },
+    {
+      "size": 1.2,
+      "color": 2003199, 
+      "position": { "x": 45, "y": 0, "z": 0 },
+      "semiMajorAxis": 45, 
+      "eccentricity": 0.03 
+    },
+    {
+      "size": 0.6,
+      "color": 8355711, 
+      "position": { "x": 55, "y": 0, "z": 0 },
+      "semiMajorAxis": 55, 
+      "eccentricity": 0.04 
+    },
+    {
+      "size": 0.4,
+      "color": 11393254,
+      "position": { "x": 65, "y": 0, "z": 0 },
+      "semiMajorAxis": 65, 
+      "eccentricity": 0.06 
+    }
+  ]
+  
