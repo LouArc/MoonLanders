@@ -8,17 +8,10 @@ const App: React.FC = () => {
   const [speed, setSpeed] = useState<number>(0.05);
   const [selectedScene, setSelectedScene] = useState<string>("Sistema Solar");
   const [isInfoSelected, setIsInfoSelected] = useState<boolean>(false);
-  const [planetDetails, setPlanetDetails] = useState<boolean>(true);
 
   return (
     <div className="main">
-      {planetDetails && (
-        <ArScene
-          setPlanetDetails={setPlanetDetails}
-          speed={speed}
-          selectedScene={selectedScene}
-        />
-      )}
+      <ArScene speed={speed} selectedScene={selectedScene} />
 
       {isInfoSelected ? (
         <GetInfo

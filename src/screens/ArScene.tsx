@@ -5,19 +5,14 @@ import { ARButton } from "three/examples/jsm/webxr/ARButton";
 import planetController from "../controllers/planet.controller";
 import data from "../assets/planets.json";
 import { Planet } from "../models/planet.model";
-//import PopInfoPlanetas from "../components/popInfoPlanetas/popInfoPlanetas";
+import PopInfoPlanetas from "../components/popInfoPlanetas/popInfoPlanetas";
 
 interface ARSceneInterface {
-  setPlanetDetails: (value: boolean) => void;
   speed: number;
   selectedScene: string;
 }
 
-const ARScene: React.FC<ARSceneInterface> = ({
-  setPlanetDetails,
-  speed,
-  selectedScene,
-}) => {
+const ARScene: React.FC<ARSceneInterface> = ({ speed, selectedScene }) => {
   let camera: THREE.PerspectiveCamera;
   let scene: THREE.Scene;
   let renderer: THREE.WebGLRenderer;
@@ -148,12 +143,9 @@ const ARScene: React.FC<ARSceneInterface> = ({
 
       if (foundPlanet) {
         displayOnlyPlanet(planets, foundPlanet.name);
-        // Ajusta la posición y agrega el planeta seleccionado
         foundPlanet.mesh.position.set(2, 0, 0); // Asegúrate de que esté en la vista
         scene.add(foundPlanet.mesh); // Agrega solo el planeta seleccionado
         setSelectedPlanet(foundPlanet); // Actualiza el planeta seleccionado para mostrar el popup
-        console.log("planeta es: ", foundPlanet.name);
-        setPlanetDetails(false);
       }
     }
   };
