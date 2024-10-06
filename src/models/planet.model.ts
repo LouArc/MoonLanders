@@ -6,6 +6,9 @@ export type Planet = {
     color: number,
     position: THREE.Vector3,
     semiMajorAxis: number,
-    eccentricity: number
+    eccentricity: number,
+    texturePath: string,
+    rotationSpeed: number,
+    orbitingObjects: Planet[]
     mesh: THREE.Mesh
 }
