@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect } from "react"; 
 import * as THREE from "three";
 import { ARButton } from "three/examples/jsm/webxr/ARButton";
 import SolarSystem from "../components/solarSystem";
