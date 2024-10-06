@@ -97,7 +97,7 @@ const ARScene: React.FC<ARSceneInterface> = ({speed, selectedScene}) => {
       "sun",
       1,
       0xffdd21,
-      new THREE.Vector3(0, 0, 0),
+      new THREE.Vector3(5, 0, 0),
       0,
       0
     );
