@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import * as THREE from "three";
 import { ARButton } from "three/examples/jsm/webxr/ARButton";
+import SolarSystem from "../components/solarSystem";
 
 const ARScene: React.FC = () => {
   let camera: THREE.PerspectiveCamera;
@@ -54,6 +55,9 @@ const ARScene: React.FC = () => {
     mesh = new THREE.Mesh(geometry, material);
     mesh.position.set(0, 0, -0.5);
     scene.add(mesh);
+
+    // Add the Solar System
+    <SolarSystem scene={scene} camera={camera} renderer={renderer} />;
 
     // Add the AR button to the body of the DOM
     document.body.appendChild(ARButton.createButton(renderer));
