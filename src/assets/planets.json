@@ -6,7 +6,8 @@
       "position": { "x": 2.5, "y": 0, "z": 0 },
       "semiMajorAxis": 5, 
       "eccentricity": 0.1,
-      "rotationSpeed": 0.02
+      "rotationSpeed": 0.02,
+      "orbitingObjects": []
     },
     {
       "name": "Venus",
@@ -15,7 +16,8 @@
       "position": { "x": 10, "y": 0, "z": 0 },
       "semiMajorAxis": 10, 
       "eccentricity": 0.05,
-      "rotationSpeed": 0.01
+      "rotationSpeed": 0.01,
+      "orbitingObjects": []
     },
     {
       "name": "Tierra",
@@ -24,7 +26,19 @@
       "position": { "x": 15, "y": 0, "z": 0 },
       "semiMajorAxis": 15, 
       "eccentricity": 0.07,
-      "rotationSpeed": 0.03
+      "rotationSpeed": 0.03,
+      "orbitingObjects": [
+        {
+          "name": "Luna",
+          "size": 0.2,
+          "color": 16711680,
+          "position": { "x": 2, "y": 0, "z": 0 },
+          "semiMajorAxis": 1.0,
+          "eccentricity": 0.0167,
+          "rotationSpeed": 0.1,
+          "orbitingObjects": []
+        }
+      ]
     },
     {
       "name": "Marte",
@@ -33,7 +47,8 @@
       "position": { "x": 25, "y": 0, "z": 0 },
       "semiMajorAxis": 25, 
       "eccentricity": 0.02 ,
-      "rotationSpeed": 0.025
+      "rotationSpeed": 0.025,
+      "orbitingObjects": []
     },
     {
       "name": "Jupiter",
@@ -42,7 +57,8 @@
       "position": { "x": 35, "y": 0, "z": 0 },
       "semiMajorAxis": 35, 
       "eccentricity": 0.01 ,
-      "rotationSpeed": 0.05
+      "rotationSpeed": 0.05,
+      "orbitingObjects": []
     },
     {
       "name": "Saturno",
@@ -51,7 +67,8 @@
       "position": { "x": 45, "y": 0, "z": 0 },
       "semiMajorAxis": 45, 
       "eccentricity": 0.03 ,
-      "rotationSpeed": 0.04
+      "rotationSpeed": 0.04,
+      "orbitingObjects": []
     },
     {
       "name": "Urano",
@@ -60,7 +77,8 @@
       "position": { "x": 55, "y": 0, "z": 0 },
       "semiMajorAxis": 55, 
       "eccentricity": 0.04 ,
-      "rotationSpeed": 0.03
+      "rotationSpeed": 0.03,
+      "orbitingObjects": []
     },
     {
       "name": "Neptuno",
@@ -69,7 +87,8 @@
       "position": { "x": 65, "y": 0, "z": 0 },
       "semiMajorAxis": 65, 
       "eccentricity": 0.06 ,
-      "rotationSpeed": 0.02
+      "rotationSpeed": 0.02,
+      "orbitingObjects": []
     }
   ]
   

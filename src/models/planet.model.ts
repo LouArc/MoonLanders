@@ -8,5 +8,6 @@ export type Planet = {
     semiMajorAxis: number,
     eccentricity: number,
     rotationSpeed: number,
+    orbitingObjects: Planet[]
     mesh: THREE.Mesh
 }
