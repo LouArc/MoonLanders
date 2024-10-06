@@ -3,20 +3,22 @@ import * as THREE from "three";
 import { ARButton } from "three/examples/jsm/webxr/ARButton";
 import planetController from "../controllers/planet.controller"; // Ensure this is imported
 import data from "../assets/planets.json"; // Ensure this is imported
+import { Planet } from "../models/planet.model";
 
 interface ARSceneInterface {
-  speed: number
+  speed: number,
+  selectedScene: string
 }
 
-const ARScene: React.FC<ARSceneInterface> = ({speed}) => {
+const ARScene: React.FC<ARSceneInterface> = ({speed, selectedScene}) => {
   let camera: THREE.PerspectiveCamera;
   let scene: THREE.Scene;
   let renderer: THREE.WebGLRenderer;
-  let mesh: THREE.Mesh;
   let sunRef: THREE.Mesh | null = null;
 
   const divRef = useRef<HTMLDivElement>(null); // Create a ref for the div container\
   const [simulatorSpeed, setSimulatorSpeed] = useState<number>(1)
+  
 
   useEffect(() => {
     setSimulatorSpeed(speed)
@@ -56,16 +58,43 @@ const ARScene: React.FC<ARSceneInterface> = ({speed}) => {
     light.position.set(0.5, 1, 0.25);
     scene.add(light);
 
+    const planets = planetController.loadPlanetData(data);
+
     // Add the Solar System
-    createSolarSystem();
+    if(selectedScene == "Sistema Solar"){
+      createSolarSystem();
+    }else{
+      displayOnlyPlanet(planets, selectedScene)
+    }
+    
 
     // Add the AR button to the body of the DOM
     document.body.appendChild(ARButton.createButton(renderer));
   };
 
+  // Function to display only the selected planet
+  const displayOnlyPlanet = (planets: Planet[], planetName: string) => {
+    // Filter the planet array to find the selected planet
+    const selectedPlanet = planets.find(
+      (planet) => planet.name.toLowerCase() === planetName.toLowerCase()
+    );
+
+    if (selectedPlanet) {
+      // Remove all other planets and add only the selected one
+      planets.forEach((planet) => scene.remove(planet.mesh)); // Remove all
+     
+      selectedPlanet.mesh.position.x = 2
+      scene.add(selectedPlanet.mesh); // Add only the selected one
+    } else {
+      console.error(`Planet ${planetName} not found!`);
+    }
+  };
+
+
   const createSolarSystem = () => {
     // Create the Sun
     const sun = planetController.createPlanet(
+      "sun",
       1,
       0xffdd21,
       new THREE.Vector3(0, 0, 0),
@@ -79,6 +108,7 @@ const ARScene: React.FC<ARSceneInterface> = ({speed}) => {
     const planets = planetController.loadPlanetData(data);
     planets.forEach((planet) => scene.add(planet.mesh));
   };
+
 
   const onWindowResize = () => {
     camera.aspect = window.innerWidth / window.innerHeight;
