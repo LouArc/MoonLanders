@@ -6,6 +6,7 @@ export type Planet = {
     color: number,
     position: THREE.Vector3,
     semiMajorAxis: number,
-    eccentricity: number
+    eccentricity: number,
+    rotationSpeed: number,
     mesh: THREE.Mesh
 }

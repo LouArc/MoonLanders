@@ -8,6 +8,7 @@ interface PlanetData {
   position: { x: number; y: number; z: number };
   semiMajorAxis: number;
   eccentricity: number;
+  rotationSpeed: number;
 }
 
 class PlanetController {
@@ -20,7 +21,8 @@ class PlanetController {
     color: number,
     position: THREE.Vector3,
     semiMajorAxis: number,
-    eccentricity: number
+    eccentricity: number,
+    rotationSpeed: number
   ): Planet {
     const geometry = new THREE.SphereGeometry(size, 32, 32);
     const material = new THREE.MeshStandardMaterial({
@@ -38,6 +40,7 @@ class PlanetController {
       mesh,
       semiMajorAxis,
       eccentricity,
+      rotationSpeed
     };
     return planet;
   }
@@ -45,14 +48,15 @@ class PlanetController {
   loadPlanetData(json: PlanetData[]): Planet[] {
     try {
       this.planets = json.map(
-        ({ name, size, color, position, semiMajorAxis, eccentricity }) =>
+        ({ name, size, color, position, semiMajorAxis, eccentricity, rotationSpeed }) =>
           this.createPlanet(
             name,
             size,
             color,
             new THREE.Vector3(position.x, position.y, position.z),
             semiMajorAxis,
-            eccentricity
+            eccentricity,
+            rotationSpeed
           )
       );
 
@@ -67,14 +71,12 @@ class PlanetController {
     const G = 6.6743e-11; // Gravitational constant
     const massSun = 1.989e30; // Mass of the Sun in kg (arbitrary unit for simulation)
 
-    // You can set this value based on your needs; for example, 1 for normal speed, 2 for double speed, etc.
-    const timeScale = simulationSpeed * 0.0001; // Adjust this value to control the speed of the simulation (0 < timeScale)
+    const timeScale = simulationSpeed * 0.0001; // Adjust this value to control the speed of the simulation
 
     this.planets.forEach((planet) => {
       // Kepler's laws of planetary motion parameters
-      const a = planet.semiMajorAxis; // Semi-major axis (arbitrary units)
+      const a = planet.semiMajorAxis; // Semi-major axis
       const e = planet.eccentricity; // Eccentricity
-      //const b = a * Math.sqrt(1 - e * e); // Semi-minor axis
 
       // Calculate the orbital period using Kepler's Third Law: T^2 = (4 * pi^2 / (G * massSun)) * a^3
       const orbitalPeriod = Math.sqrt(
@@ -98,6 +100,9 @@ class PlanetController {
         planet.position.y,
         planet.position.z
       );
+
+      // Rotate the planet on its own axis
+      planet.mesh.rotation.y += planet.rotationSpeed * timeScale; // Rotate along the Y-axis (change axis if needed)
     });
 
     this.time += 0.01 * timeScale; // Increment time to simulate motion, scaled by timeScale

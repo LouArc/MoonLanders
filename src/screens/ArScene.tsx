@@ -99,7 +99,8 @@ const ARScene: React.FC<ARSceneInterface> = ({speed, selectedScene}) => {
       0xffdd21,
       new THREE.Vector3(0, 0, 0),
       0,
-      0
+      0,
+      0.02
     );
     scene.add(sun.mesh);
     sunRef = sun.mesh; // Store the Sun reference
