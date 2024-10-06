@@ -8,4 +8,11 @@ export type Planet = {
     semiMajorAxis: number,
     eccentricity: number
     mesh: THREE.Mesh
+
+    mass: number,
+    velocity: number,
+    distanceEarth: number,
+    nextClosesApproach: string,
+    orbitalPeriod: string,
+    dateDiscovered: string,
 }

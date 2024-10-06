@@ -8,7 +8,7 @@ export default defineConfig({
     port: 4000, // Desired port
     host: "0.0.0.0", // Allows access from the local network
     strictPort: true, // Fail if the port is already in use
-    https: true
+    https: true,
   },
   plugins: [react(), mkcert()],
 });

@@ -1,42 +1,47 @@
 import React, { useEffect, useRef, useState } from "react";
+import "./ArScene.css";
 import * as THREE from "three";
 import { ARButton } from "three/examples/jsm/webxr/ARButton";
-import planetController from "../controllers/planet.controller"; // Ensure this is imported
-import data from "../assets/planets.json"; // Ensure this is imported
+import planetController from "../controllers/planet.controller";
+import data from "../assets/planets.json";
 import { Planet } from "../models/planet.model";
+import PopInfoPlanetas from "../components/popInfoPlanetas/popInfoPlanetas";
 
 interface ARSceneInterface {
-  speed: number,
-  selectedScene: string
+  speed: number;
+  selectedScene: string;
 }
 
-const ARScene: React.FC<ARSceneInterface> = ({speed, selectedScene}) => {
+const ARScene: React.FC<ARSceneInterface> = ({ speed, selectedScene }) => {
   let camera: THREE.PerspectiveCamera;
   let scene: THREE.Scene;
   let renderer: THREE.WebGLRenderer;
+  let raycaster: THREE.Raycaster;
   let sunRef: THREE.Mesh | null = null;
 
-  const divRef = useRef<HTMLDivElement>(null); // Create a ref for the div container\
-  const [simulatorSpeed, setSimulatorSpeed] = useState<number>(1)
-  
+  const divRef = useRef<HTMLDivElement>(null);
+  const [simulatorSpeed, setSimulatorSpeed] = useState<number>(1);
+  const [selectedPlanet, setSelectedPlanet] = useState<Planet | null>(null);
 
   useEffect(() => {
-    setSimulatorSpeed(speed)
+    setSimulatorSpeed(speed);
     if (divRef.current) {
       init();
       animate();
       window.addEventListener("resize", onWindowResize);
+      window.addEventListener("click", onClick); // Agrega el listener de clic
     }
 
     return () => {
       window.removeEventListener("resize", onWindowResize);
+      window.removeEventListener("click", onClick); // Limpia el listener de clic
       renderer.dispose();
     };
-  });
+  }, [speed]);
 
   const init = () => {
     scene = new THREE.Scene();
-
+    raycaster = new THREE.Raycaster();
     camera = new THREE.PerspectiveCamera(
       70,
       window.innerWidth / window.innerHeight,
@@ -49,7 +54,6 @@ const ARScene: React.FC<ARSceneInterface> = ({speed, selectedScene}) => {
     renderer.setSize(window.innerWidth, window.innerHeight);
     renderer.xr.enabled = true;
 
-    // Append the renderer DOM element to the divRef
     if (divRef.current) {
       divRef.current.appendChild(renderer.domElement);
     }
@@ -60,39 +64,31 @@ const ARScene: React.FC<ARSceneInterface> = ({speed, selectedScene}) => {
 
     const planets = planetController.loadPlanetData(data);
 
-    // Add the Solar System
-    if(selectedScene == "Sistema Solar"){
-      createSolarSystem();
-    }else{
-      displayOnlyPlanet(planets, selectedScene)
+    if (selectedScene === "Sistema Solar") {
+      createSolarSystem(planets);
+    } else {
+      displayOnlyPlanet(planets, selectedScene);
     }
-    
 
-    // Add the AR button to the body of the DOM
     document.body.appendChild(ARButton.createButton(renderer));
   };
 
-  // Function to display only the selected planet
+  
   const displayOnlyPlanet = (planets: Planet[], planetName: string) => {
-    // Filter the planet array to find the selected planet
-    const selectedPlanet = planets.find(
+    const foundPlanet = planets.find(
       (planet) => planet.name.toLowerCase() === planetName.toLowerCase()
     );
 
-    if (selectedPlanet) {
-      // Remove all other planets and add only the selected one
-      planets.forEach((planet) => scene.remove(planet.mesh)); // Remove all
-     
-      selectedPlanet.mesh.position.x = 2
-      scene.add(selectedPlanet.mesh); // Add only the selected one
+    if (foundPlanet) {
+      planets.forEach((planet) => scene.remove(planet.mesh)); // Remueve todos los planetas
+      foundPlanet.mesh.position.x = 2;
+      scene.add(foundPlanet.mesh); // Agrega solo el planeta seleccionado
     } else {
       console.error(`Planet ${planetName} not found!`);
     }
   };
-
-
-  const createSolarSystem = () => {
-    // Create the Sun
+  
+  const createSolarSystem = (planets: Planet[]) => {
     const sun = planetController.createPlanet(
       "sun",
       1,
@@ -102,14 +98,13 @@ const ARScene: React.FC<ARSceneInterface> = ({speed, selectedScene}) => {
       0
     );
     scene.add(sun.mesh);
-    sunRef = sun.mesh; // Store the Sun reference
+    sunRef = sun.mesh;
 
-    // Create planets with adjusted sizes and positions
-    const planets = planetController.loadPlanetData(data);
-    planets.forEach((planet) => scene.add(planet.mesh));
+    planets.forEach((planet) => {
+      scene.add(planet.mesh);
+    });
   };
-
-
+  
   const onWindowResize = () => {
     camera.aspect = window.innerWidth / window.innerHeight;
     camera.updateProjectionMatrix();
@@ -121,17 +116,59 @@ const ARScene: React.FC<ARSceneInterface> = ({speed, selectedScene}) => {
   };
 
   const render = () => {
-    // Update the orbits of the planets
     if (sunRef) {
-      console.log(simulatorSpeed)
       planetController.updateOrbit(sunRef.position, simulatorSpeed);
     }
     renderer.render(scene, camera);
   };
+  
+  const onClick = (event: MouseEvent) => {
+    if (!renderer.xr.isPresenting) return; // Solo si está en modo AR
+  
+    const mouse = new THREE.Vector2(
+      (event.clientX / window.innerWidth) * 2 - 1,
+      -(event.clientY / window.innerHeight) * 2 + 1
+    );
+  
+    raycaster.setFromCamera(mouse, camera);
+    const intersects = raycaster.intersectObjects(scene.children);
+  
+    if (intersects.length > 0) {
+      const selectedObject = intersects[0].object;
+  
+      // Verificar si el objeto es un planeta
+      const planets = planetController.loadPlanetData(data);
+      const foundPlanet = planets.find(
+        (planet) => planet.mesh === selectedObject
+      );
+  
+      if (foundPlanet) {
+        // Remueve todos los planetas
+        displayOnlyPlanet(planets, foundPlanet.name);
+        // Ajusta la posición y agrega el planeta seleccionado
+        foundPlanet.mesh.position.set(2, 0, 0); // Asegúrate de que esté en la vista
+        scene.add(foundPlanet.mesh); // Agrega solo el planeta seleccionado
+        setSelectedPlanet(foundPlanet); // Actualiza el planeta seleccionado para mostrar el popup
+      }
+    }
+  };
+
+  const closePopup = () => {
+    setSelectedPlanet(null);
+  };
 
   return (
-    // Use a div that will contain the THREE.js renderer
-    <div ref={divRef} style={{ width: '100%', height: '100vh' }}></div>
+    <div ref={divRef} style={{ width: "100%", height: "100vh" }}>
+      {selectedPlanet && (
+        <div className="popUpInfoPlantContainer">
+          <PopInfoPlanetas
+            selectedPlanet={selectedPlanet.name}
+            planetData={data}
+            onClose={closePopup}
+          />
+        </div>
+      )}
+    </div>
   );
 };
 

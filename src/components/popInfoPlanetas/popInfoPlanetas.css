@@ -1,0 +1,52 @@
+.popInfoPlanetas {
+  position: fixed;
+  display: flex;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 80%;
+  max-width: 500px;
+  background-color: #fff;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  border-radius: 10px;
+  z-index: 1000;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+.popInfoPlanetas-content {
+  text-align: center;
+}
+
+.popInfoPlanetas-content h2 {
+  margin-top: 0;
+  font-size: 24px;
+  color: #333;
+}
+
+.popInfoPlanetas-content ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 20px 0;
+}
+
+.popInfoPlanetas-content ul li {
+  margin: 10px 0;
+  font-size: 18px;
+  color: #555;
+}
+
+.popInfoPlanetas-content button {
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  font-size: 16px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.popInfoPlanetas-content button:hover {
+  background-color: #0056b3;
+}

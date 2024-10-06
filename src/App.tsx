@@ -5,7 +5,7 @@ import "./App.css"
 import { useState } from "react";
 
 const App: React.FC = () => {
-  const [speed, setSpeed] = useState<number>(1)
+  const [speed, setSpeed] = useState<number>(0.3)
   const [selectedScene, setSelectedScene] = useState<string>("Sistema Solar")
   const [isInfoSelected, setIsInfoSelected] = useState<boolean>(false)
 
