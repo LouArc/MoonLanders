@@ -37,11 +37,11 @@ const SolarSystem: React.FC<SolarSystemProps> = ({ scene }) => {
     scene.add(pointLight);
 
     // Update function to animate planets
-    const animatePlanets = () => {
-      if (sunRef.current) {
-        planetController.updateOrbit(sunRef.current.position, 1);
-      }
-    };
+    // const animatePlanets = () => {
+    //   if (sunRef.current) {
+    //     planetController.updateOrbit(sunRef.current.position, 1);
+    //   }
+    // };
 
     return () => {
       // Cleanup if necessary
