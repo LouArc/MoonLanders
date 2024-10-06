@@ -5,14 +5,19 @@ import { ARButton } from "three/examples/jsm/webxr/ARButton";
 import planetController from "../controllers/planet.controller";
 import data from "../assets/planets.json";
 import { Planet } from "../models/planet.model";
-import PopInfoPlanetas from "../components/popInfoPlanetas/popInfoPlanetas";
+//import PopInfoPlanetas from "../components/popInfoPlanetas/popInfoPlanetas";
 
 interface ARSceneInterface {
+  setPlanetDetails: (value: boolean) => void;
   speed: number;
   selectedScene: string;
 }
 
-const ARScene: React.FC<ARSceneInterface> = ({ speed, selectedScene }) => {
+const ARScene: React.FC<ARSceneInterface> = ({
+  setPlanetDetails,
+  speed,
+  selectedScene,
+}) => {
   let camera: THREE.PerspectiveCamera;
   let scene: THREE.Scene;
   let renderer: THREE.WebGLRenderer;
@@ -73,7 +78,6 @@ const ARScene: React.FC<ARSceneInterface> = ({ speed, selectedScene }) => {
     document.body.appendChild(ARButton.createButton(renderer));
   };
 
-  
   const displayOnlyPlanet = (planets: Planet[], planetName: string) => {
     const foundPlanet = planets.find(
       (planet) => planet.name.toLowerCase() === planetName.toLowerCase()
@@ -87,7 +91,7 @@ const ARScene: React.FC<ARSceneInterface> = ({ speed, selectedScene }) => {
       console.error(`Planet ${planetName} not found!`);
     }
   };
-  
+
   const createSolarSystem = (planets: Planet[]) => {
     const sun = planetController.createPlanet(
       "sun",
@@ -104,7 +108,7 @@ const ARScene: React.FC<ARSceneInterface> = ({ speed, selectedScene }) => {
       scene.add(planet.mesh);
     });
   };
-  
+
   const onWindowResize = () => {
     camera.aspect = window.innerWidth / window.innerHeight;
     camera.updateProjectionMatrix();
@@ -121,34 +125,35 @@ const ARScene: React.FC<ARSceneInterface> = ({ speed, selectedScene }) => {
     }
     renderer.render(scene, camera);
   };
-  
+
   const onClick = (event: MouseEvent) => {
     if (!renderer.xr.isPresenting) return; // Solo si está en modo AR
-  
+
     const mouse = new THREE.Vector2(
       (event.clientX / window.innerWidth) * 2 - 1,
       -(event.clientY / window.innerHeight) * 2 + 1
     );
-  
+
     raycaster.setFromCamera(mouse, camera);
     const intersects = raycaster.intersectObjects(scene.children);
-  
+
     if (intersects.length > 0) {
       const selectedObject = intersects[0].object;
-  
-      // Verificar si el objeto es un planeta
+
       const planets = planetController.loadPlanetData(data);
-      const foundPlanet = planets.find(
-        (planet) => planet.mesh === selectedObject
-      );
-  
+      const foundPlanet = planets.find((planet) => {
+        const isEqual = planet.mesh.name === selectedObject.name; // Comparison
+        return isEqual; // Explicitly return the result of the comparison
+      });
+
       if (foundPlanet) {
-        // Remueve todos los planetas
         displayOnlyPlanet(planets, foundPlanet.name);
         // Ajusta la posición y agrega el planeta seleccionado
         foundPlanet.mesh.position.set(2, 0, 0); // Asegúrate de que esté en la vista
         scene.add(foundPlanet.mesh); // Agrega solo el planeta seleccionado
         setSelectedPlanet(foundPlanet); // Actualiza el planeta seleccionado para mostrar el popup
+        console.log("planeta es: ", foundPlanet.name);
+        setPlanetDetails(false);
       }
     }
   };
@@ -157,19 +162,7 @@ const ARScene: React.FC<ARSceneInterface> = ({ speed, selectedScene }) => {
     setSelectedPlanet(null);
   };
 
-  return (
-    <div ref={divRef} style={{ width: "100%", height: "100vh" }}>
-      {selectedPlanet && (
-        <div className="popUpInfoPlantContainer">
-          <PopInfoPlanetas
-            selectedPlanet={selectedPlanet.name}
-            planetData={data}
-            onClose={closePopup}
-          />
-        </div>
-      )}
-    </div>
-  );
+  return <div ref={divRef} style={{ width: "100%", height: "100vh" }}></div>;
 };
 
 export default ARScene;

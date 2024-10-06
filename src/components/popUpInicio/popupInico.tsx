@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import "./popupInicio.css";
 
-
 interface PopUpInicioInterface {
   setSpeed: React.Dispatch<React.SetStateAction<number>>;
   speed: number;
@@ -15,7 +14,7 @@ export const PopUpInicio: React.FC<PopUpInicioInterface> = ({
   setSpeed,
   selectedScene,
   setSelectedScene,
-  setIsInfoSelected
+  setIsInfoSelected,
 }) => {
   const nombresPlanetas = [
     "Sistema Solar",
@@ -78,7 +77,14 @@ export const PopUpInicio: React.FC<PopUpInicioInterface> = ({
           </div>
         </form>
 
-        <button style={{width:200}} onClick={() => {setIsInfoSelected(true)}}>GET INFO!!</button>
+        <button
+          style={{ width: 200 }}
+          onClick={() => {
+            setIsInfoSelected(true);
+          }}
+        >
+          GET INFO!!
+        </button>
       </div>
     </div>
   );

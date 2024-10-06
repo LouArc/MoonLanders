@@ -2,12 +2,18 @@ import * as THREE from "three";
 import { Planet } from "../models/planet.model";
 
 interface PlanetData {
-  name: string,
+  name: string;
   size: number;
   color: number;
   position: { x: number; y: number; z: number };
   semiMajorAxis: number;
   eccentricity: number;
+  mass: number;
+  velocity: number;
+  distanceFromEarth: number;
+  nextClosestApproach: string;
+  orbitalPeriod: number;
+  dateDiscovered: string;
 }
 
 class PlanetController {
@@ -20,7 +26,13 @@ class PlanetController {
     color: number,
     position: THREE.Vector3,
     semiMajorAxis: number,
-    eccentricity: number
+    eccentricity: number,
+    mass: number,
+    velocity: number,
+    distanceFromEarth: number,
+    nextClosestApproach: string,
+    orbitalPeriod: number,
+    dateDiscovered: string
   ): Planet {
     const geometry = new THREE.SphereGeometry(size, 32, 32);
     const material = new THREE.MeshStandardMaterial({
@@ -29,6 +41,22 @@ class PlanetController {
 
     const mesh = new THREE.Mesh(geometry, material);
     mesh.position.copy(position);
+    mesh.name = name;
+
+    mesh.userData = {
+      name,
+      size,
+      color,
+      position,
+      semiMajorAxis,
+      eccentricity,
+      mass,
+      velocity,
+      distanceFromEarth, // Initialize with a default value
+      nextClosestApproach,
+      orbitalPeriod,
+      dateDiscovered,
+    };
 
     const planet: Planet = {
       name,
