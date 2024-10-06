@@ -18,7 +18,7 @@ const ARScene: React.FC = () => {
 
     return () => {
       window.removeEventListener("resize", onWindowResize);
-      renderer.dispose(); // Clean up the renderer
+      renderer.dispose();
     };
   }, []);
 
