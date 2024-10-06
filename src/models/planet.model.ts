@@ -1,6 +1,7 @@
 import * as THREE from "three";
 
 export type Planet = {
+
     size: number,
     color: number,
     position: THREE.Vector3,

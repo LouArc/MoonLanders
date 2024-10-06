@@ -8,7 +8,6 @@ const ARScene: React.FC = () => {
   let camera: THREE.PerspectiveCamera;
   let scene: THREE.Scene;
   let renderer: THREE.WebGLRenderer;
-  let mesh: THREE.Mesh;
   let sunRef: THREE.Mesh | null = null;
 
   useEffect(() => {
@@ -45,18 +44,9 @@ const ARScene: React.FC = () => {
     light.position.set(0.5, 1, 0.25);
     scene.add(light);
 
-    const geometry = new THREE.IcosahedronGeometry(0.1, 1);
-    const material = new THREE.MeshPhongMaterial({
-      color: new THREE.Color("rgb(226,35,213)"),
-      shininess: 6,
-      flatShading: true,
-      transparent: true,
-      opacity: 0.8,
-    });
+    
 
-    mesh = new THREE.Mesh(geometry, material);
-    mesh.position.set(0, 0, -0.5);
-    scene.add(mesh);
+
 
     // Add the Solar System
     createSolarSystem();
