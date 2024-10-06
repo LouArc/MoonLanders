@@ -40,7 +40,8 @@ class PlanetController {
     const planet: Planet = {
       name,
       size,
-      color: 0, // Optional, not used if textures are applied
+      color: 0,
+      texturePath,
       position,
       mesh,
       semiMajorAxis,
