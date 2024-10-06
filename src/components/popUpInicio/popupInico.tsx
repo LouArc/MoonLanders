@@ -1,11 +1,16 @@
 import React, { useState } from "react";
 import "./popupInicio.css";
 
-export const PopUpInicio: React.FC = () => {
-    const [sliderValue, setSliderValue] = useState<number>(0); // Initialize the slider value at 0
+interface PopUpInicioInterface {
+    setSpeed: React.Dispatch<React.SetStateAction<number>>
+    speed: number
+}
+
+export const PopUpInicio: React.FC<PopUpInicioInterface> = ({speed, setSpeed}) => {
+    
 
     const handleSliderChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setSliderValue(Number(event.target.value)); // Update the slider value state
+        setSpeed(Number(event.target.value)); // Update the slider value state
     };
 
     return (
@@ -17,14 +22,14 @@ export const PopUpInicio: React.FC = () => {
                     <div className="slidecontainer">
                         <input
                             type="range"
-                            min="-100"    // Minimum value
-                            max="100"     // Maximum value
-                            value={sliderValue} // Current value
+                            min="0"    // Minimum value
+                            max="5"     // Maximum value
+                            value={speed} // Current value
                             className="slider"
                             id="myRange"
                             onChange={handleSliderChange} // Handle slider changes
                         />
-                        <p>Time: <span id="demo">{sliderValue}</span> day/s</p> {/* Display the current slider value */}
+                        <p>Simulation Speed: <span id="demo">{speed}</span> day/s</p> {/* Display the current slider value */}
                     </div>
                 </form>
                 <button>GO</button>
