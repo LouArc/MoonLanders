@@ -96,4 +96,3 @@ const SolarSystem: React.FC = () => {
 };
 
 export default SolarSystem;
-  
