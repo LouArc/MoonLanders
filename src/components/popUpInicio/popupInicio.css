@@ -1,21 +1,21 @@
 @import url('https://fonts.googleapis.com/css2?family=Jersey+25&display=swap');
 
 .popupInicio {
-    display: relative;
+    display: flex;
     justify-content: center;
     align-items: center;
     position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    width: fit-content;
-    height: fit-content;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
     background-color: #1a181897;
     z-index: 1000;
     padding: 34px;
     border-radius: 30px;
+    width: fit-content;
+    height: fit-content;
 }
+
 
 .info {
   display: flex;

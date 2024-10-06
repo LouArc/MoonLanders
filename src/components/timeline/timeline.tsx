@@ -25,9 +25,10 @@ const VerticalTimeline: React.FC<VerticalTimelineProps> = ({ maxTime = 100, onTi
       // Move the circle
       circleRef.current.style.top = `${newTop}px`;
 
-      // Calculate and set time
-      const percentage = newTop / (timelineRect.height - circleRef.current.offsetHeight);
-      const calculatedTime = Math.round(percentage * maxTime);
+      // Calculate and set time (invert the direction: up = positive, down = negative)
+      const percentage = ((timelineRect.height - circleRef.current.offsetHeight) / 2 - newTop) / 
+                         ((timelineRect.height - circleRef.current.offsetHeight) / 2);
+      const calculatedTime = Math.round(percentage * (maxTime / 2));
       setTime(calculatedTime);
 
       // Trigger the callback for external components
@@ -48,6 +49,13 @@ const VerticalTimeline: React.FC<VerticalTimelineProps> = ({ maxTime = 100, onTi
   };
 
   useEffect(() => {
+    // Set the initial position of the circle to the center
+    if (circleRef.current && timelineRef.current) {
+      const timelineRect = timelineRef.current.getBoundingClientRect();
+      const initialTop = (timelineRect.height - circleRef.current.offsetHeight) / 2;
+      circleRef.current.style.top = `${initialTop}px`;
+    }
+
     return () => {
       // Cleanup event listeners if component unmounts
       document.removeEventListener('mousemove', handleMouseMove);

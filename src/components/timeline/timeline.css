@@ -7,7 +7,7 @@
   
   .timeline {
     height: 100%;
-    width: 12px; /* Increased for better UI appearance */
+    width: 6px; 
     background-color: lightgray;
     border-radius: 6px;
     position: relative;
@@ -16,13 +16,13 @@
   }
   
   .draggable {
-    width: 20px;
-    height: 20px;
+    width: 18px;
+    height: 18px;
     background-color: #4CAF50;
     border-radius: 50%;
     position: absolute;
     top: 0;
-    left: -4px; /* Adjusted to center the circle */
+    left: -6px;
     cursor: pointer;
   }
   
