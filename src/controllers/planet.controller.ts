@@ -2,13 +2,14 @@ import * as THREE from "three";
 import { Planet } from "../models/planet.model";
 
 interface PlanetData {
-  name: string,
+  name: string;
   size: number;
   color: number;
   position: { x: number; y: number; z: number };
   semiMajorAxis: number;
   eccentricity: number;
   rotationSpeed: number;
+  orbitingObjects: PlanetData[];
 }
 
 class PlanetController {
@@ -22,7 +23,8 @@ class PlanetController {
     position: THREE.Vector3,
     semiMajorAxis: number,
     eccentricity: number,
-    rotationSpeed: number
+    rotationSpeed: number,
+    orbitingObjects: Planet[]
   ): Planet {
     const geometry = new THREE.SphereGeometry(size, 32, 32);
     const material = new THREE.MeshStandardMaterial({
@@ -32,6 +34,8 @@ class PlanetController {
     const mesh = new THREE.Mesh(geometry, material);
     mesh.position.copy(position);
 
+    
+
     const planet: Planet = {
       name,
       size,
@@ -40,7 +44,8 @@ class PlanetController {
       mesh,
       semiMajorAxis,
       eccentricity,
-      rotationSpeed
+      rotationSpeed,
+      orbitingObjects,
     };
     return planet;
   }
@@ -48,7 +53,16 @@ class PlanetController {
   loadPlanetData(json: PlanetData[]): Planet[] {
     try {
       this.planets = json.map(
-        ({ name, size, color, position, semiMajorAxis, eccentricity, rotationSpeed }) =>
+        ({
+          name,
+          size,
+          color,
+          position,
+          semiMajorAxis,
+          eccentricity,
+          rotationSpeed,
+          orbitingObjects
+        }) =>
           this.createPlanet(
             name,
             size,
@@ -56,7 +70,19 @@ class PlanetController {
             new THREE.Vector3(position.x, position.y, position.z),
             semiMajorAxis,
             eccentricity,
-            rotationSpeed
+            rotationSpeed,
+            orbitingObjects.map(orbitingObject => 
+              this.createPlanet(
+                orbitingObject.name,
+                orbitingObject.size,
+                orbitingObject.color,
+                new THREE.Vector3(orbitingObject.position.x, orbitingObject.position.y, orbitingObject.position.z),
+                orbitingObject.semiMajorAxis,
+                orbitingObject.eccentricity,
+                orbitingObject.rotationSpeed,
+                [] // Assuming orbitingObjects of orbitingObject is empty at this level
+              )
+            )
           )
       );
 
@@ -103,9 +129,46 @@ class PlanetController {
 
       // Rotate the planet on its own axis
       planet.mesh.rotation.y += planet.rotationSpeed * timeScale; // Rotate along the Y-axis (change axis if needed)
+
+      // Now update the orbiting objects (moons, etc.)
+      planet.orbitingObjects.forEach((orbitingObject) => {
+        console.log(orbitingObject)
+        this.updateOrbitingObject(planet, orbitingObject, timeScale);
+      });
     });
 
     this.time += 0.01 * timeScale; // Increment time to simulate motion, scaled by timeScale
+  }
+
+  // This method handles updating the position of orbiting objects (like moons)
+  updateOrbitingObject(
+    planet: Planet,
+    orbitingObject: Planet,
+    timeScale: number
+  ) {
+    const a = orbitingObject.semiMajorAxis; // Semi-major axis
+    const e = orbitingObject.eccentricity; // Eccentricity
+
+    // Kepler's Third Law for orbiting object (same formula)
+    const orbitalPeriod = Math.sqrt(
+      (4 * Math.PI ** 2 * a ** 3) / (6.6743e-11 * 5.972e24) // Gravitational constant and mass of planet (arbitrary unit for simulation)
+    );
+
+    const angularVelocity = (2 * Math.PI) / orbitalPeriod;
+    const theta = angularVelocity * (this.time * timeScale);
+    const r = (a * (1 - e * e)) / (1 + e * Math.cos(theta));
+
+    // Position relative to parent planet
+    orbitingObject.position.x = planet.position.x + r * Math.cos(theta);
+    orbitingObject.position.z = planet.position.z + r * Math.sin(theta);
+    orbitingObject.mesh.position.set(
+      orbitingObject.position.x,
+      orbitingObject.position.y,
+      orbitingObject.position.z
+    );
+
+    // Rotate the orbiting object on its axis
+    orbitingObject.mesh.rotation.y += orbitingObject.rotationSpeed * timeScale;
   }
 }
 

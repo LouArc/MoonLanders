@@ -100,14 +100,21 @@ const ARScene: React.FC<ARSceneInterface> = ({speed, selectedScene}) => {
       new THREE.Vector3(0, 0, 0),
       0,
       0,
-      0.02
+      0.02,
+      []
     );
     scene.add(sun.mesh);
     sunRef = sun.mesh; // Store the Sun reference
 
     // Create planets with adjusted sizes and positions
     const planets = planetController.loadPlanetData(data);
-    planets.forEach((planet) => scene.add(planet.mesh));
+    planets.forEach((planet) => {
+      scene.add(planet.mesh)
+      planet.orbitingObjects.forEach((orbitingObject) => {
+        scene.add(orbitingObject.mesh)
+      })
+      
+    });
   };
 
 
